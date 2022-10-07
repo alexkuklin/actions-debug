@@ -1,0 +1,19 @@
+name: 'Deploy helm charts to dev cluster'     # Name of the action.
+on: workflow_dispatch # manual, for now
+
+jobs:
+  deployment:
+    environment: staging
+    runs-on: 'ubuntu-latest'
+    steps:
+    - name: 'Checkout'  # Checkout the repository code.
+      uses: 'actions/checkout@v1'
+
+    - name: 'Deploy'
+      uses: 'deliverybot/helm@master'
+      with:
+        token: '${{ github.token }}'
+        chart: 'app'
+      env:
+        KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
+
